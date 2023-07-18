@@ -1,5 +1,5 @@
 """
-Djeme Doli 12/10/2020
+Djeme Doli 07/17/2023
 Program: ConversionProg
          The program uses functions to convert between Binary, Hexadecimal and Decimal
 """
@@ -8,28 +8,36 @@ def DecToBin(Qot):
        Qot = int(Qot)
        Bin = []
        while Qot != 0:
-             Mod = Qot % 2
-             Bin.append(Mod)
-             Qot = Qot // 2
-         
-             Bin.reverse()
-             DecBinary = ' '.join(map(str, Bin)) 
-       print(DecBinary)
+             Mod = Qot % 2   # The modulo of any number by 2 is either 0 or 1
+             Bin.insert(0, Mod)
+             Qot = Qot // 2     
     else:
-        print("You have not entered a Decimal (Digits only)")
+        print("You have not entered a Decimal")
+        return
+    DecBinary = "".join(map(str, Bin)) # Convert each element of the list to String, then join them all together
+    return DecBinary 
 
-
+def BinaryCheck(strg):
+    isBinary = True
+    for element in strg:
+        if (element != '0') and (element != '1'):
+           isBinary = False
+           break
+    return isBinary
+        
 
 def BinToDec(Bin):
-#   Bin = input("Enter a binary number: ")
-    count = len(Bin)
-    Dec = 0
+#   Bin = input("Enter a BINARY number (0s and 1s only): ")    
+    if len(Bin) != 0:
+       Dec = 0
+       count = len(Bin) 
+       for digit in Bin:
+         count -= 1
+         Dec += int(digit) * (2 ** count)
+       return Dec
+    else:
+        return None
 
-    for digit in Bin:
-        Dec += int(digit) * 2 ** (count - 1)
-        count -= 1
-
-    print(f"The Decimal equivalent of {Bin} is {Dec}")
 
 
 def HexToBinary(Number):
@@ -49,24 +57,37 @@ def HexToBinary(Number):
 
     print(HexBinary)
 
-##########################################################################################################
+###############
 
-print("\t WELCOME TO OUR CONVERSION PROGRAM\number")
+print("\t WELCOME TO OUR CONVERSION PROGRAM\n")
 print("\t\t - Press 1 to convert a Binary number to Decimal\n")
-print("\t\t - Press 2 to convert an Hexadecimal number to Binary")
-print("\t\t - Press 3 to convert a Decimal number to Binary")
-Entry = int(input("\n\n\tChoose an option:   "))
-if Entry == 1:
-   print("\n\n\tBinary Numbers contain digits of 1 and 0\n")
-   Bin = input("Enter a binary number: ")
-   BinToDec(Bin)
-elif Entry == 2:
-    Qot = input("Please, Enter any Decimal Number: ")
-    DecToBin(Qot)
-elif Entry == 3:
+print("\t\t - Press 2 to convert a Decimal number to Binary\n")
+print("\t\t - Press 3 to convert an Hexadecimal number to Binary\n")
+
+while True:
+ Entry = input("\n\n\tChoose an option (Press Enter to exit): ")
+ if Entry == '1':
+   print("\n\n\tBinary Numbers contain digits of 1 and 0 only\n")
+   while True:
+         Bin = input("Enter a binary number / press Enter to exit: ")
+         if BinaryCheck(Bin):
+            print("The Decimal equivalent of ",Bin, "is: ",BinToDec(Bin))
+         else:
+             print("This is not a valid Binary number")
+         if Bin == "":
+            break
+ elif Entry == '2':
+    while True:
+          Qot = input("Please, Enter any Decimal Number / press Enter to exit: ")
+          if Qot == "":
+             break
+          else:
+            print(DecToBin(Qot))
+ elif Entry == '3':
     print("\n\n\tHexadecimal Numbers contain digits and any letter from A to F\n")
     Number = input("Please, Enter any Hexadecimal Number: ")
     HexToBinary(Number)
-else:
-    print("\n\nWE ARE STILL WORKING ON THE PROGRAM")
+    
+ elif Entry == "":
+     break
 
